@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Piskvorky</string>
+
+    <string-array name="text">
+    <item>Jakou hru chceš hrát?</item>
+        <item>Zvol si velikost mřížky a začni soupeřit!</item>
+    </string-array>
+</resources>
