@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".four"
-    android:background="@drawable/custom_background"
+    android:background="@drawable/backgroundsurface"
     android:orientation="vertical">
 
 
@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
+            android:textColor="#FFFFFF"
             android:freezesText="true"
             android:text="Hráč 1 :0"
             android:textStyle="bold"
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textColor="#FFFFFF"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="-29dp"
@@ -49,12 +51,14 @@
             android:layout_weight="1"
             android:id="@+id/button_r0c0"
             android:freezesText="true"
+            android:background="@drawable/tiles"
             android:textSize="45sp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r0c1"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
         <Button
@@ -62,6 +66,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r0c2"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
         <Button
@@ -69,6 +74,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r0c3"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
 
@@ -86,6 +92,7 @@
             android:layout_weight="1"
             android:id="@+id/button_r1c0"
             android:freezesText="true"
+            android:background="@drawable/tiles"
             android:textSize="45sp"/>
         <Button
             android:layout_width="0dp"
@@ -93,6 +100,7 @@
             android:layout_weight="1"
             android:id="@+id/button_r1c1"
             android:freezesText="true"
+            android:background="@drawable/tiles"
             android:textSize="45sp"/>
         <Button
             android:layout_width="0dp"
@@ -100,12 +108,14 @@
             android:layout_weight="1"
             android:id="@+id/button_r1c2"
             android:freezesText="true"
+            android:background="@drawable/tiles"
             android:textSize="45sp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r1c3"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
 
@@ -122,6 +132,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r2c0"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
         <Button
@@ -130,12 +141,14 @@
             android:layout_weight="1"
             android:id="@+id/button_r2c1"
             android:freezesText="true"
+            android:background="@drawable/tiles"
             android:textSize="45sp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r2c2"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
         <Button
@@ -143,6 +156,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r2c3"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
 
@@ -159,11 +173,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r3c0"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="@drawable/tiles"
             android:layout_weight="1"
             android:id="@+id/button_r3c1"
             android:freezesText="true"
@@ -172,6 +188,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/tiles"
             android:id="@+id/button_r3c2"
             android:freezesText="true"
             android:textSize="45sp"/>
@@ -180,6 +197,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/button_r3c3"
+            android:background="@drawable/tiles"
             android:freezesText="true"
             android:textSize="45sp"/>
 

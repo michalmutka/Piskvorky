@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,14 +21,45 @@ public class three extends AppCompatActivity implements View.OnClickListener {
     private int bodyP2;
     private TextView bodyP1TV;
     private TextView bodyP2TV;
+    private String player1name;
+    private String player2name;
+    private String player1color;
+    private String player2color;
+    private String p1rgb;
+    private String p2rgb;
+    SharedPreferences myFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.three);
 
+        myFile = getSharedPreferences("settings", 0);
+        player1name = myFile.getString("p1name", "Hráč 1");
+        player2name = myFile.getString("p2name", "Hráč 2");
+        player1color = myFile.getString("p1color", "barva1");
+        player2color = myFile.getString("p2color", "barva2");
         bodyP1TV = findViewById(R.id.skorep1);
         bodyP2TV = findViewById(R.id.skorep2);
+        bodyP1TV.setText(player1name+" : 0");
+        bodyP2TV.setText(player2name+" : 0");
+
+        if (player1color.equals("Červená")) {p1rgb="#F51010";}
+        else if (player1color.equals("Modrá")) {p1rgb="#0830F7";}
+        else if (player1color.equals("Zelená")) {p1rgb="#5FAF36";}
+        else if (player1color.equals("Žlutá")) {p1rgb="#ECEC1C";}
+        else if (player1color.equals("Černá")) {p1rgb="#000000";}
+
+
+        if (player2color.equals("Červená")) {p2rgb="#F51010";}
+        else if (player2color.equals("Modrá")) {p2rgb="#0830F7";}
+        else if (player2color.equals("Zelená")) {p2rgb="#5FAF36";}
+        else if (player2color.equals("Žlutá")) {p2rgb="#ECEC1C";}
+        else if (player2color.equals("Černá")) {p2rgb="#000000";}
+
+        bodyP1TV.setTextColor(Color.parseColor(p1rgb));
+        bodyP2TV.setTextColor(Color.parseColor(p2rgb));
+
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++) {
                 String buttonID = "button_r"+i+"c"+j;
@@ -71,9 +103,13 @@ public class three extends AppCompatActivity implements View.OnClickListener {
         }
         if (jeTahHrace1) {
             ((Button)v).setText("X");
+            ((Button)v).setTextColor(Color.parseColor(p1rgb));
+
+
         }
         else {
             ((Button)v).setText("O");
+            ((Button)v).setTextColor(Color.parseColor(p2rgb));
         }
         pocetTahu++;
         if (vyhralNekdo()) {
@@ -160,8 +196,8 @@ public class three extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void vykresliBody() {
-        bodyP1TV.setText("Hráč 1 : "+bodyP1);
-        bodyP2TV.setText("Hráč 2 : "+bodyP2);
+        bodyP1TV.setText(player1name+" : "+bodyP1);
+        bodyP2TV.setText(player2name+" : "+bodyP2);
     }
     private void vykresliDesku() {
         for (int i=0;i<3;i++) {

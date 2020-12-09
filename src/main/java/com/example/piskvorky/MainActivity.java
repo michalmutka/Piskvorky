@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buton4_4;
     Button butonSettings;
     Button butonScore;
+    Button nastavHrace;
 
 
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buton4_4 = findViewById(R.id.button4_4);
         butonSettings = findViewById(R.id.buttonSettings);
         butonScore = findViewById(R.id.buttonScore);
+        nastavHrace = findViewById(R.id.nastavHrace);
 
         butonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +91,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), three.class);
+                startActivity(i);
+            }
+        });
+
+        nastavHrace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), popup.class);
                 startActivity(i);
             }
         });
@@ -150,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             butonScore.setBackgroundResource(R.drawable.custom_button_shake);
               TextView shakerTV = findViewById(R.id.shakerTV);
               shakerTV.setVisibility(View.INVISIBLE);
+              nastavHrace.setBackgroundResource(R.drawable.custom_button_shake);
+
+
 
     }
 

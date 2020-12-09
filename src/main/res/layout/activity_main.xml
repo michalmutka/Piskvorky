@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/custom_background"
+    android:background="@drawable/backgroundsurface"
     android:layout_height="match_parent">
 
     <TextView
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.133"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:typeface="serif"
         android:textStyle="bold"
         />
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:textStyle="italic"
         android:typeface="serif"
@@ -45,7 +45,7 @@
         android:id="@+id/fadingTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -121,6 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Zatřes pro změnu barvy!"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -128,6 +129,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.87"
         />
+
+    <Button
+        android:id="@+id/nastavHrace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hráči"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button4_4"
+        app:layout_constraintVertical_bias="0.087"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/custom_button"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
