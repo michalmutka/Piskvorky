@@ -2,9 +2,18 @@ package com.example.piskvorky;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,9 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import java.io.IOException;
+import java.util.List;
 
-
-public class four extends AppCompatActivity implements View.OnClickListener {
+public class four extends AppCompatActivity implements View.OnClickListener, LocationListener  {
     private Button[][] poleTlacitek = new Button[4][4];
     private boolean jeTahHrace1 = true;
     private int pocetTahu;
@@ -28,13 +39,31 @@ public class four extends AppCompatActivity implements View.OnClickListener {
     private String player2color;
     private String p1rgb;
     private String p2rgb;
+    private TextView doKolika;
+    private Integer vitezneBody;
+    DBHelper mydb;
     SharedPreferences myFile;
+    private LocationManager locationManager;
+    private double longtitude;
+    private double latitude;
+    private String cityName;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.four);
 
+        //poloha
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+
+
+        mydb = new DBHelper(this);
         myFile = getSharedPreferences("settings", 0);
         player1name = myFile.getString("p1name", "Hráč 1");
         player2name = myFile.getString("p2name", "Hráč 2");
@@ -42,15 +71,17 @@ public class four extends AppCompatActivity implements View.OnClickListener {
         player2color = myFile.getString("p2color", "barva2");
         bodyP1TV = findViewById(R.id.skorep1);
         bodyP2TV = findViewById(R.id.skorep2);
+        vitezneBody = myFile.getInt("pocetBodu",1);
         bodyP1TV.setText(player1name+" : 0");
         bodyP2TV.setText(player2name+" : 0");
+        doKolika = findViewById(R.id.doKolika);
+        doKolika.setText(""+vitezneBody);
 
         if (player1color.equals("Červená")) {p1rgb="#F51010";}
         else if (player1color.equals("Modrá")) {p1rgb="#0830F7";}
         else if (player1color.equals("Zelená")) {p1rgb="#5FAF36";}
         else if (player1color.equals("Žlutá")) {p1rgb="#ECEC1C";}
         else if (player1color.equals("Černá")) {p1rgb="#000000";}
-
 
         if (player2color.equals("Červená")) {p2rgb="#F51010";}
         else if (player2color.equals("Modrá")) {p2rgb="#0830F7";}
@@ -60,13 +91,6 @@ public class four extends AppCompatActivity implements View.OnClickListener {
 
         bodyP1TV.setTextColor(Color.parseColor(p1rgb));
         bodyP2TV.setTextColor(Color.parseColor(p2rgb));
-
-
-
-
-
-
-
 
         for(int i=0;i<4;i++) {
             for (int j = 0; j < 4; j++) {
@@ -95,11 +119,10 @@ public class four extends AppCompatActivity implements View.OnClickListener {
         if(ID == R.id.settingsMenuList) {
             Intent intent = new Intent(this, settings.class);
             startActivity(intent);
-
         }
         if(ID == R.id.scoreMenuList) {
-
-
+            Intent intent = new Intent(this, Score.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -143,12 +166,15 @@ public class four extends AppCompatActivity implements View.OnClickListener {
             }
         }
         for (int i = 0; i < 4; i++) {
-            if ((podminky[i][0].equals(podminky[i][1]) && podminky[i][0].equals(podminky[i][2]) && !podminky[i][0].equals("")) || (podminky[i][3].equals(podminky[i][1]) && podminky[i][3].equals(podminky[i][2]) && !podminky[i][3].equals(""))) {  //rows
+            if ((podminky[i][0].equals(podminky[i][1]) && podminky[i][0].equals(podminky[i][2]) && !podminky[i][0].equals(""))
+                    || (podminky[i][3].equals(podminky[i][1]) && podminky[i][3].equals(podminky[i][2]) && !podminky[i][3].equals(""))) {  //rows
+
                 return true;
             }
         }
         for (int i = 0; i < 4; i++) {
-            if ((podminky[0][i].equals(podminky[1][i]) && podminky[0][i].equals(podminky[2][i]) && !podminky[0][i].equals("")) || (podminky[3][i].equals(podminky[1][i]) && podminky[3][i].equals(podminky[2][i]) && !podminky[3][i].equals(""))) {  //cols
+            if ((podminky[0][i].equals(podminky[1][i]) && podminky[0][i].equals(podminky[2][i]) && !podminky[0][i].equals(""))
+                    || (podminky[3][i].equals(podminky[1][i]) && podminky[3][i].equals(podminky[2][i]) && !podminky[3][i].equals(""))) {  //cols
                 return true;
             }
         }
@@ -173,16 +199,38 @@ public class four extends AppCompatActivity implements View.OnClickListener {
 
     private void vyhraP1() {
         bodyP1++;
-        vykresliBody();
-        vykresliDesku();
-        winningSound();
+        if(bodyP1==vitezneBody) {
+            cityName=getCity(location);
+            mydb.insertItem(player1name, player2name, vitezneBody.toString(),player1name, cityName);
+            Intent intent = new Intent(this, afterwin.class);
+            intent.putExtra("vitez", player1name);
+            startActivity(intent);
+            absouluteWinningSound();
+            novaHra();
+        }
+        else {
+            vykresliBody();
+            vykresliDesku();
+            winningSound();
+        }
 
     }
     private void vyhraP2() {
         bodyP2++;
-        vykresliBody();
-        vykresliDesku();
-        winningSound();
+        if(bodyP2==vitezneBody) {
+            cityName=getCity(location);
+            mydb.insertItem(player1name, player2name, vitezneBody.toString(),player2name, cityName);
+            Intent intent = new Intent(this, afterwin.class);
+            intent.putExtra("vitez", player2name);
+            startActivity(intent);
+            absouluteWinningSound();
+            novaHra();
+        }
+        else {
+            vykresliBody();
+            vykresliDesku();
+            winningSound();
+        }
     }
     private void remiza() {
         vykresliDesku();
@@ -216,9 +264,17 @@ public class four extends AppCompatActivity implements View.OnClickListener {
             final MediaPlayer mp = MediaPlayer.create(this, R.raw.win);
             mp.start();
         }
-
-
     }
+
+    private void absouluteWinningSound() {
+        SharedPreferences mPrefs = getSharedPreferences("settings", 0);
+        Integer soundString = mPrefs.getInt("sound", 1);
+        if (soundString==1){
+            final MediaPlayer mp = MediaPlayer.create(this, R.raw.absolutewin);
+            mp.start();
+        }
+    }
+
     private void tieSound () {
         SharedPreferences mPrefs = getSharedPreferences("settings", 0);
         Integer soundString = mPrefs.getInt("sound", 1);
@@ -235,6 +291,8 @@ public class four extends AppCompatActivity implements View.OnClickListener {
         outState.putInt("bodyP1", bodyP1);
         outState.putInt("bodyP2", bodyP2);
         outState.putBoolean("jeTahHrace1", jeTahHrace1);
+        outState.putString("p1rgb", p1rgb);
+        outState.putString("p2rgb", p2rgb);
     }
 
     @Override
@@ -244,5 +302,28 @@ public class four extends AppCompatActivity implements View.OnClickListener {
         bodyP1 = savedInstanceState.getInt("bodyP1");
         bodyP2 = savedInstanceState.getInt("bodyP2");
         jeTahHrace1 = savedInstanceState.getBoolean("jeTahHrace1");
+        p1rgb = savedInstanceState.getString("p1rgb");
+        p2rgb = savedInstanceState.getString("p2rgb");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude = location.getLatitude();
+        longtitude = location.getLongitude();
+    }
+
+    public String getCity(Location location) {
+        String cityName="Není známá";
+        try {
+            Geocoder geocoder = new Geocoder(this);
+            List <Address> addresses=null;
+            addresses=geocoder.getFromLocation(location.getLatitude(), location.getLongitude(),1);
+            cityName = addresses.get(0).getAddressLine(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),"ERROR", Toast.LENGTH_LONG).show();
+        }
+        return cityName;
     }
 }

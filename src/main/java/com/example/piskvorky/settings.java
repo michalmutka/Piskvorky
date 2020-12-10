@@ -1,7 +1,5 @@
 package com.example.piskvorky;
 
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,7 +19,6 @@ public class settings extends AppCompatActivity {
         final CheckBox sound = findViewById(R.id.checkBox);
         final CheckBox music = findViewById(R.id.checkBox1);
         final Intent intent = new Intent(this, BackgroundMusic.class);
-
         final SharedPreferences myFile = getSharedPreferences("settings", 0);
         Integer soundString = myFile.getInt("sound", 1);
         Integer musicString = myFile.getInt("music", 1);
@@ -73,8 +70,6 @@ public class settings extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
     }
 }

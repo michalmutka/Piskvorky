@@ -1,8 +1,5 @@
 package com.example.piskvorky;
 
-
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -26,10 +23,7 @@ public class popup extends AppCompatActivity {
 
         Button buttonDone;
         buttonDone = findViewById(R.id.buttonHotovo);
-
         final SharedPreferences myFile = getSharedPreferences("settings", 0);
-        String player1name = myFile.getString("p1name", "Hráč 1");
-        String player2name = myFile.getString("p2name", "Hráč 2");
 
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
         ArrayAdapter<CharSequence> staticAdapter1 = ArrayAdapter.createFromResource(this, R.array.barvy, android.R.layout.simple_spinner_item);
@@ -41,7 +35,6 @@ public class popup extends AppCompatActivity {
                 String p1color=(String) parent.getItemAtPosition(position).toString();
                 SharedPreferences.Editor editor = myFile.edit();
                 editor.putString("p1color", p1color).commit();
-               // Toast.makeText(getApplicationContext(), "vyber1: "+(String) parent.getItemAtPosition(position), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -60,7 +53,6 @@ public class popup extends AppCompatActivity {
                 String p2color=(String) parent.getItemAtPosition(position).toString();
                 SharedPreferences.Editor editor = myFile.edit();
                 editor.putString("p2color", p2color).commit();
-               // Toast.makeText(getApplicationContext(),"vyber2: "+(String) parent.getItemAtPosition(position),Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -81,11 +73,15 @@ public class popup extends AppCompatActivity {
                 EditText p2name=findViewById(R.id.hrac2jmeno);
                 String name_2=p2name.getText().toString();
                 EditText pocetBodu=findViewById(R.id.pocetBodu);
-                String body=pocetBodu.getText().toString();
+
+                String value= pocetBodu.getText().toString();
+                int body=Integer.parseInt(value);
+
                 SharedPreferences.Editor editor = myFile.edit();
                 editor.putString("p1name", name_1).commit();
                 editor.putString("p2name", name_2).commit();
-                editor.putString("pocetBodu", body).commit();
+                editor.putInt("pocetBodu", body).commit();
+                Toast.makeText(getApplicationContext(),"pts: "+body,Toast.LENGTH_LONG).show();
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                startActivity(i);
